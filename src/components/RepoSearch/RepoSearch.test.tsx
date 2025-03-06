@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import RepoSearch from "./RepoSearch";
-import { useGithubIssues } from "../hooks/useGithubIssues";
+import { useGithubIssues } from "../../hooks/useGithubIssues";
 
-jest.mock("../hooks/useGithubIssues", () => ({
+jest.mock("../../hooks/useGithubIssues", () => ({
   useGithubIssues: jest.fn(),
 }));
 

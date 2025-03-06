@@ -1,5 +1,5 @@
-import RepoSearch from "./components/RepoSearch";
-import Board from "./components/Board";
+import RepoSearch from "./components/RepoSearch/RepoSearch";
+import Board from "./components/Board/Board";
 
 const App = () => (
   <div style={{ padding: 20 }}>

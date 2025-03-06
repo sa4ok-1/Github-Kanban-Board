@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Board from "./Board";
+import Board from "../Board/Board";
 
 
 jest.mock("./Column", () => ({ title, type }: { title: string; type: string }) => (

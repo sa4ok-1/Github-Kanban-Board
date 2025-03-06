@@ -8,23 +8,32 @@ interface IssueState {
 }
 
 export const useIssueStore = create<IssueState>((set) => ({
-  issues: { ToDo: [], "In Progress": [], Done: [] },
-  
-  setIssues: (column, issues) =>
+  issues: {
+    ToDo: [],
+    "In Progress": [],
+    Done: [],
+  },
+
+  setIssues: (column: ColumnType, issues: Issue[]) =>
     set((state) => ({
-      issues: { ...state.issues, [column]: issues },
+      issues: {
+        ...state.issues,
+        [column]: [...issues],
+      },
     })),
 
-  moveIssue: (id, from, to) =>
+  moveIssue: (id: number, from: ColumnType, to: ColumnType) =>
     set((state) => {
+      if (from === to) return state;
+
       const issueToMove = state.issues[from].find((issue) => issue.id === id);
       if (!issueToMove) return state;
-      
+
       return {
         issues: {
           ...state.issues,
           [from]: state.issues[from].filter((issue) => issue.id !== id),
-          [to]: [...state.issues[to], issueToMove],
+          [to]: [...state.issues[to], { ...issueToMove }],
         },
       };
     }),

@@ -6,13 +6,23 @@ export const useGithubIssues = () => {
   const { setIssues } = useIssueStore();
 
   const fetchIssues = async (repoUrl: string) => {
-    const repoPath = repoUrl.replace("https://github.com/", "");
-    const apiUrl = `https://api.github.com/repos/${repoPath}/issues`;
-
     try {
+      const repoMatch = repoUrl.match(/github\.com\/([^\/]+\/[^\/]+)/i);
+      if (!repoMatch) {
+        throw new Error("Invalid GitHub repository URL");
+      }
+
+      const repoPath = repoMatch[1];
+      const apiUrl = `https://api.github.com/repos/${repoPath}/issues?state=all`;
+
       const { data } = await axios.get<Issue[]>(apiUrl);
-      const toDo = data.filter((issue) => !issue.assignee && issue.state === "open");
-      const inProgress = data.filter((issue) => issue.assignee && issue.state === "open");
+
+      const toDo = data.filter(
+        (issue) => !issue.assignee && issue.state === "open"
+      );
+      const inProgress = data.filter(
+        (issue) => issue.assignee && issue.state === "open"
+      );
       const done = data.filter((issue) => issue.state === "closed");
 
       setIssues("ToDo", toDo);
@@ -20,6 +30,7 @@ export const useGithubIssues = () => {
       setIssues("Done", done);
     } catch (error) {
       console.error("Error fetching issues:", error);
+      throw error;
     }
   };
 

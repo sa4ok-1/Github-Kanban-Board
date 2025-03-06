@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Input, Button } from "antd";
-import { useGithubIssues } from "../hooks/useGithubIssues";
+import { useGithubIssues } from "../../hooks/useGithubIssues";
 
 const RepoSearch = () => {
   const [repoUrl, setRepoUrl] = useState("");

@@ -1,13 +1,14 @@
 module.exports = {
-  testEnvironment: 'jsdom', // Для тестування React-компонентів у браузерному оточенні
+  testEnvironment: "jsdom",
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest', // Трансформація TypeScript файлів
+    "^.+\\.(ts|tsx)$": "ts-jest",
   },
   transformIgnorePatterns: [
-    '/node_modules/(?!axios|msw)', // Дозволяємо трансформувати axios і msw
+    "/node_modules/(?!axios|msw)",
+    "/node_modules/(?!react-dnd|react-dnd-html5-backend)/",
   ],
   moduleNameMapper: {
-    '\\.(css|less|scss|sass)$': 'identity-obj-proxy', // Для обробки стилів
+    "\\.(css|less|scss|sass)$": "identity-obj-proxy",
   },
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'], // Для додаткових налаштувань, наприклад, @testing-library/jest-dom
+  setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
 };
