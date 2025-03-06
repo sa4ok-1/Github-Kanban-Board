@@ -2,6 +2,10 @@
 
 A React-based application that displays GitHub repository issues in a Kanban board format with drag-and-drop functionality.
 
+### DEMO
+
+[Live Preview](https://github-kanban-board-three.vercel.app/)
+
 ## Features
 
 - Input field to enter GitHub repository URL (e.g., `https://github.com/facebook/react`)
@@ -19,13 +23,33 @@ A React-based application that displays GitHub repository issues in a Kanban boa
 
 ## Technologies Used
 
-- **React 18** with Hooks (no class components)
-- **TypeScript** for static typing
-- **Ant Design** as the UI library
-- **Zustand** for state management
-- **React Testing Library** for unit testing
-- **react-dnd** for drag-and-drop functionality
-- **axios** for API requests
-- **ESLint** and **Prettier** for code quality and formatting
+- **React 18**
+- **TypeScript**
+- **Ant Design**
+- **Zustand**
+- **React Testing Library**
+- **react-dnd**
+- **axios**
+- **ESLint** and **Prettier**
 
-## Project Structure
+## Getting Started
+
+Follow these steps to set up the project locally
+
+1.  **Clone the repo**
+
+    ```bash
+    git clone [https://github.com/sa4ok-1/Github-Kanban-Board.git]
+
+    cd MultiClaster
+
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
+3.  **Run the project locally**
+    ```bash
+    npm start
+    ```

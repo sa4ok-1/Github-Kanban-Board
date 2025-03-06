@@ -3,8 +3,10 @@ import { Issue, ColumnType } from "../types/index";
 
 interface IssueState {
   issues: Record<ColumnType, Issue[]>;
+  isLoading: boolean;
   setIssues: (column: ColumnType, issues: Issue[]) => void;
   moveIssue: (id: number, from: ColumnType, to: ColumnType) => void;
+  setLoading: (loading: boolean) => void;
 }
 
 export const useIssueStore = create<IssueState>((set) => ({
@@ -13,14 +15,20 @@ export const useIssueStore = create<IssueState>((set) => ({
     "In Progress": [],
     Done: [],
   },
+  isLoading: false,
 
-  setIssues: (column: ColumnType, issues: Issue[]) =>
-    set((state) => ({
-      issues: {
-        ...state.issues,
-        [column]: [...issues],
-      },
-    })),
+  setIssues: (column: ColumnType, issues: Issue[]) => {
+    set({ isLoading: true });
+    setTimeout(() => {
+      set((state) => ({
+        issues: {
+          ...state.issues,
+          [column]: [...issues],
+        },
+        isLoading: false,
+      }));
+    }, 800); 
+  },
 
   moveIssue: (id: number, from: ColumnType, to: ColumnType) =>
     set((state) => {
@@ -37,4 +45,6 @@ export const useIssueStore = create<IssueState>((set) => ({
         },
       };
     }),
+
+  setLoading: (loading: boolean) => set({ isLoading: loading }),
 }));

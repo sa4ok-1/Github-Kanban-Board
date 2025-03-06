@@ -5,7 +5,7 @@ import IssueCard from "../IssueCard/IssueCard";
 import { useDrop, DropTargetMonitor } from "react-dnd";
 
 const Column = ({ title, type }: { title: string; type: ColumnType }) => {
-  const { issues, moveIssue } = useIssueStore();
+  const { issues, moveIssue, isLoading } = useIssueStore();
   const divRef = useRef<HTMLDivElement>(null);
 
   const [{ isOver }, drop] = useDrop<
@@ -35,9 +35,15 @@ const Column = ({ title, type }: { title: string; type: ColumnType }) => {
       }}
     >
       <h3>{title}</h3>
-      {issues[type].map((issue) => (
-        <IssueCard key={issue.id} issue={issue} type={type} />
-      ))}
+      {isLoading ? (
+        <p>Завантаження...</p>
+      ) : issues[type].length === 0 ? (
+        <p>Немає задач</p>
+      ) : (
+        issues[type].map((issue) => (
+          <IssueCard key={issue.id} issue={issue} type={type} />
+        ))
+      )}
     </div>
   );
 };
