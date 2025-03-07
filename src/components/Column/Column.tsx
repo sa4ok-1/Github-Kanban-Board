@@ -14,8 +14,20 @@ const Column = ({ title, type }: { title: string; type: ColumnType }) => {
     { isOver: boolean }
   >({
     accept: "ISSUE",
-    drop: (item) => {
-      moveIssue(item.id, item.fromType, type);
+    hover: (item, monitor) => {
+      if (!divRef.current || item.fromType === type) return;
+
+      const hoverBoundingRect = divRef.current.getBoundingClientRect();
+      const clientOffset = monitor.getClientOffset();
+      if (!clientOffset) return;
+
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      const columnHeight = hoverBoundingRect.height;
+      const relativePosition = hoverClientY / columnHeight;
+
+      const targetIndex = Math.floor(relativePosition * issues[type].length);
+
+      moveIssue(item.id, item.fromType, type, targetIndex);
     },
     collect: (monitor: DropTargetMonitor) => ({
       isOver: !!monitor.isOver(),

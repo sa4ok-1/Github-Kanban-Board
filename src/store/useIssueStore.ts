@@ -5,7 +5,14 @@ interface IssueState {
   issues: Record<ColumnType, Issue[]>;
   isLoading: boolean;
   setIssues: (column: ColumnType, issues: Issue[]) => void;
-  moveIssue: (id: number, from: ColumnType, to: ColumnType) => void;
+  moveIssue: (
+    id: number,
+    from: ColumnType,
+    to: ColumnType,
+    targetIndex?: number,
+    hoverId?: number,
+    insertAfter?: boolean
+  ) => void;
   setLoading: (loading: boolean) => void;
 }
 
@@ -27,23 +34,63 @@ export const useIssueStore = create<IssueState>((set) => ({
         },
         isLoading: false,
       }));
-    }, 800); 
+    }, 800);
   },
 
-  moveIssue: (id: number, from: ColumnType, to: ColumnType) =>
-    set((state) => {
-      if (from === to) return state;
-
+  moveIssue: (
+    id: number,
+    from: ColumnType,
+    to: ColumnType,
+    targetIndex?: number,
+    hoverId?: number,
+    insertAfter?: boolean
+  ) =>
+    void set((state) => {
       const issueToMove = state.issues[from].find((issue) => issue.id === id);
       if (!issueToMove) return state;
 
-      return {
-        issues: {
-          ...state.issues,
-          [from]: state.issues[from].filter((issue) => issue.id !== id),
-          [to]: [...state.issues[to], { ...issueToMove }],
-        },
-      };
+      if (from === to && hoverId !== undefined) {
+        const fromIssues = state.issues[from].filter(
+          (issue) => issue.id !== id
+        );
+        const hoverIndex = fromIssues.findIndex(
+          (issue) => issue.id === hoverId
+        );
+        if (hoverIndex === -1) return state;
+
+        const newIssues = [...fromIssues];
+        const insertIndex = insertAfter ? hoverIndex + 1 : hoverIndex;
+        newIssues.splice(insertIndex, 0, issueToMove);
+
+        return {
+          issues: {
+            ...state.issues,
+            [from]: newIssues,
+          },
+        };
+      }
+
+      if (from !== to) {
+        const fromIssues = state.issues[from].filter(
+          (issue) => issue.id !== id
+        );
+        const toIssues = [...state.issues[to]];
+        const insertIndex =
+          targetIndex !== undefined
+            ? Math.min(targetIndex, toIssues.length)
+            : toIssues.length;
+        toIssues.splice(insertIndex, 0, issueToMove);
+
+        return {
+          issues: {
+            ...state.issues,
+            [from]: fromIssues,
+            [to]: toIssues,
+          },
+        };
+      }
+
+      return state;
     }),
 
   setLoading: (loading: boolean) => set({ isLoading: loading }),
